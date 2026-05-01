@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - WellnessIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">WellnessIQ</div>
+    <div class="nav-links">
+      <div class="streak-counter" style="color: var(--warning); font-weight: bold; margin-right: 15px;">🔥 0 Day Streak
+      </div>
+      <span class="user-name-display" style="margin-right: 15px; font-weight: bold; color: var(--primary);">User</span>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Check-In</a>
+      <a href="trends.html">Trends</a>
+      <a href="relaxation.html">Relaxation</a>
+      <a href="settings.html" style="color: var(--primary);">⚙️ Settings</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">☀️/🌙</button>
+      <button onclick="logout()"
+        style="background:none; border:none; color:var(--text-main); cursor:pointer; margin-left:10px; text-decoration:underline;">Logout</button>
+    </div>
+  </nav>
+
+  <section class="container" style="max-width: 600px; margin-top: 50px;">
+    <div class="form-header">
+      <h1>Custom Wellness Goals 🎯</h1>
+      <p>Set your personal targets. The AI will adjust your scores and analysis based on these goals.</p>
+    </div>
+
+    <form id="settingsForm" class="glass" onsubmit="saveGoals(event)">
+      <div class="form-section">
+        <div class="input-group">
+          <label>Sleep Goal (Hours)</label>
+          <input type="number" id="goalSleep" placeholder="e.g. 8" step="0.5" required min="3" max="16">
+        </div>
+        <div class="input-group">
+          <label>Daily Steps Goal</label>
+          <input type="number" id="goalSteps" placeholder="e.g. 10000" required min="1000" max="50000">
+        </div>
+        <div class="input-group">
+          <label>Water Intake Goal (Liters)</label>
+          <input type="number" id="goalWater" placeholder="e.g. 2.5" step="0.1" required min="0.5" max="8">
+        </div>
+      </div>
+
+      <div class="submit-container" style="display: flex; gap: 15px;">
+        <button type="submit" class="primary-btn" style="flex: 1;">Save Goals</button>
+        <button type="button" class="primary-btn"
+          style="flex: 1; background: var(--glass-hover); color: var(--text-main);" onclick="resetDefaults()">Reset to
+          Defaults</button>
+      </div>
+      <p id="saveMessage"
+        style="text-align: center; margin-top: 15px; color: var(--good); display: none; font-weight: bold;">Goals Saved
+        Successfully!</p>
+    </form>
+  </section>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Load current goals
+      const goals = JSON.parse(localStorage.getItem('userGoals')) || { sleep: 8, steps: 8000, water: 2.0 };
+      document.getElementById('goalSleep').value = goals.sleep;
+      document.getElementById('goalSteps').value = goals.steps;
+      document.getElementById('goalWater').value = goals.water;
+    });
+
+    function saveGoals(event) {
+      event.preventDefault();
+      const newGoals = {
+        sleep: parseFloat(document.getElementById('goalSleep').value),
+        steps: parseInt(document.getElementById('goalSteps').value),
+        water: parseFloat(document.getElementById('goalWater').value)
+      };
+      localStorage.setItem('userGoals', JSON.stringify(newGoals));
+
+      const msg = document.getElementById('saveMessage');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    }
+
+    function resetDefaults() {
+      document.getElementById('goalSleep').value = 8;
+      document.getElementById('goalSteps').value = 8000;
+      document.getElementById('goalWater').value = 2.0;
+      saveGoals({ preventDefault: () => { } });
+    }
+  </script>
+  <script src="chatbot.js"></script>
+</body>
+
+</html>

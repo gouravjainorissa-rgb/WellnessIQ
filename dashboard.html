@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - WellnessIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">WellnessIQ</div>
+    <div class="nav-links">
+      <div class="streak-counter" style="color: var(--warning); font-weight: bold; margin-right: 15px;">🔥 0 Day Streak
+      </div>
+      <span class="user-name-display" style="margin-right: 15px; font-weight: bold; color: var(--primary);">User</span>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Check-In</a>
+      <a href="trends.html">Trends</a>
+      <a href="relaxation.html">Relaxation</a>
+      <a href="settings.html">⚙️ Settings</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">☀️/🌙</button>
+      <button onclick="logout()"
+        style="background:none; border:none; color:var(--text-main); cursor:pointer; margin-left:10px; text-decoration:underline;">Logout</button>
+    </div>
+  </nav>
+
+  <section class="container">
+
+    <div class="form-header">
+      <h1>Daily Check-In</h1>
+      <p>Log your vitals and lifestyle metrics to receive intelligent health insights.</p>
+    </div>
+
+    <form id="form" class="glass">
+
+      <!-- PERSONAL PROFILE & PHYSICAL -->
+      <div class="form-section">
+        <h3>Personal Profile & Physical Metrics</h3>
+        <div class="grid">
+          <div class="input-group">
+            <label>Age</label>
+            <input type="number" id="age" placeholder="e.g. 28" required min="10" max="120">
+          </div>
+          <div class="input-group">
+            <label>Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g. 175" required min="50" max="250">
+          </div>
+          <div class="input-group">
+            <label>Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g. 70" required min="20" max="300" step="0.1">
+          </div>
+          <div class="input-group">
+            <label>Work Type</label>
+            <select id="workType" required>
+              <option value="" disabled selected>Select Work Type...</option>
+              <option value="Desk Job">Desk Job (Sedentary)</option>
+              <option value="Active">Active / Field Work</option>
+              <option value="Mixed">Mixed (Desk + Active)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>General Diet Quality</label>
+            <select id="diet" required>
+              <option value="" disabled selected>Select Diet Quality...</option>
+              <option value="Healthy">Healthy & Balanced (High Fiber/Protein)</option>
+              <option value="Average">Average (Mixed Home/Outside food)</option>
+              <option value="Fast Food">Poor (Fast Food Heavy, High Sugar)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Do you smoke?</label>
+            <select id="smoke" required>
+              <option value="" disabled selected>Select an option...</option>
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Do you consume alcohol?</label>
+            <select id="alcohol" required>
+              <option value="" disabled selected>Select an option...</option>
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDICAL HISTORY SECTION -->
+      <div class="form-section">
+        <h3>Medical History</h3>
+        <div class="input-group">
+          <label>Do you have any past or existing medical conditions?</label>
+          <select id="medicalHistory" required>
+            <option value="" disabled selected>Select an option...</option>
+            <option value="None">None</option>
+            <option value="Hypertension">Hypertension (High BP)</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Heart Disease">Heart Disease</option>
+            <option value="Asthma">Asthma</option>
+            <option value="Thyroid Issues">Thyroid Issues</option>
+            <option value="Fever">Fever (Frequent)</option>
+            <option value="Tonsillitis">Tonsillitis</option>
+            <option value="Cancer">Cancer</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- VITALS SECTION -->
+      <div class="form-section">
+        <h3>Vitals</h3>
+        <div class="grid">
+          <div class="input-group">
+            <label>Blood Pressure (Systolic)</label>
+            <input type="number" id="bpSys" placeholder="e.g. 120" required>
+          </div>
+          <div class="input-group">
+            <label>Blood Pressure (Diastolic)</label>
+            <input type="number" id="bpDia" placeholder="e.g. 80" required>
+          </div>
+          <div class="input-group">
+            <label>Blood Sugar (mg/dL)</label>
+            <input type="number" id="sugar" placeholder="e.g. 95" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIFESTYLE SECTION -->
+      <div class="form-section">
+        <h3>Lifestyle</h3>
+        <div class="grid">
+          <div class="input-group">
+            <label>Sleep (Hours)</label>
+            <input type="number" id="sleep" placeholder="e.g. 7.5" step="0.5" required>
+          </div>
+          <div class="input-group">
+            <label>Steps</label>
+            <input type="number" id="steps" placeholder="e.g. 8000" required>
+          </div>
+          <div class="input-group hydration-widget">
+            <label>Water Intake (Liters)</label>
+            <div class="water-tracker">
+              <button type="button" class="water-btn minus" onclick="updateWater(-0.25)">-</button>
+              <div class="water-bottle">
+                <div class="water-level" id="waterLevel"></div>
+                <span class="water-text" id="waterDisplay">0.0 L</span>
+              </div>
+              <button type="button" class="water-btn plus" onclick="updateWater(0.25)">+</button>
+            </div>
+            <!-- Hidden input to maintain compatibility with existing form logic -->
+            <input type="number" id="water" value="0" step="0.1" required style="display: none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- MENTAL & SCREEN SECTION -->
+      <div class="form-section">
+        <h3>Mental State & Habits</h3>
+        <div class="grid">
+          <div class="input-group">
+            <label>Screen Time (Hours)</label>
+            <input type="number" id="screen" placeholder="e.g. 6" step="0.5" required>
+          </div>
+        </div>
+
+        <div class="range-group">
+          <label>Perceived Stress Level</label>
+          <div class="range-labels">
+            <span>Relaxed</span>
+            <span>Moderate</span>
+            <span>High Stress</span>
+          </div>
+          <input type="range" id="stress" min="1" max="10" value="5">
+        </div>
+      </div>
+
+      <div class="submit-container">
+        <button type="submit" class="primary-btn">Generate Analysis</button>
+      </div>
+
+    </form>
+
+  </section>
+
+  <script src="script.js"></script>
+  <script src="chatbot.js"></script>
+</body>
+
+</html>

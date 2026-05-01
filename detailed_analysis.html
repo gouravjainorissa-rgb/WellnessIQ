@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detailed Report - WellnessIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">WellnessIQ</div>
+    <div class="nav-links">
+      <div class="streak-counter" style="color: var(--warning); font-weight: bold; margin-right: 15px;">🔥 0 Day Streak
+      </div>
+      <span class="user-name-display" style="margin-right: 15px; font-weight: bold; color: var(--primary);">User</span>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Check-In</a>
+      <a href="trends.html">Trends</a>
+      <a href="relaxation.html">Relaxation</a>
+      <a href="settings.html">⚙️ Settings</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">☀️/🌙</button>
+      <button onclick="logout()"
+        style="background:none; border:none; color:var(--text-main); cursor:pointer; margin-left:10px; text-decoration:underline;">Logout</button>
+    </div>
+  </nav>
+
+  <section class="container">
+    <div class="form-header">
+      <a href="analysis.html"
+        style="color: var(--primary); text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to
+        Dashboard</a>
+      <h1>Detailed Parameter Analysis</h1>
+      <p>A comprehensive breakdown of each health metric.</p>
+    </div>
+
+    <div id="detailed-report-container" class="report-grid">
+      <!-- Cards will be injected here via script.js -->
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+  <script>
+    // Ensure the detailed report renders
+    setTimeout(() => renderDetailedReport(), 100);
+  </script>
+  <script src="chatbot.js"></script>
+</body>
+
+</html>

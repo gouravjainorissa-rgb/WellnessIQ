@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - WellnessIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">WellnessIQ</div>
+    <div class="nav-links">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">☀️/🌙</button>
+    </div>
+  </nav>
+
+  <section class="login-container" style="max-width: 450px; margin: 10vh auto; padding: 0 20px;">
+    <div class="form-header" style="margin-bottom: 30px;">
+      <h1
+        style="background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 3rem; padding-bottom: 5px;">
+        Welcome Back</h1>
+      <p style="font-size: 1.1rem; margin-top: 10px; color: var(--text-muted);">
+        Enter your details to access your AI personalized health dashboard.
+      </p>
+    </div>
+
+    <form id="loginForm" class="glass" onsubmit="handleLogin(event)"
+      style="padding: 40px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div class="input-group">
+        <label style="color: var(--text-main); font-size: 1rem; margin-bottom: 5px;">Full Name</label>
+        <input type="text" id="userName" placeholder="e.g. Jane Doe" required
+          style="padding: 16px 20px; font-size: 1.1rem; border-radius: 12px; width: 100%; box-sizing: border-box;">
+      </div>
+
+      <div class="input-group">
+        <label style="color: var(--text-main); font-size: 1rem; margin-bottom: 5px;">Phone Number</label>
+        <input type="tel" id="userPhone" placeholder="e.g. +1 234 567 8900" required
+          style="padding: 16px 20px; font-size: 1.1rem; border-radius: 12px; width: 100%; box-sizing: border-box;">
+      </div>
+
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; margin-top: -5px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
+          <span style="color: var(--text-muted);">Remember me</span>
+        </label>
+        <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">Need help?</a>
+      </div>
+
+      <div class="submit-container" style="text-align: center; margin-top: 10px;">
+        <button type="submit" class="primary-btn"
+          style="width: 100%; padding: 18px; font-size: 1.2rem; font-weight: 700; border-radius: 16px; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(0, 229, 255, 0.3);">Access
+          Dashboard</button>
+      </div>
+
+    </form>
+  </section>
+
+  <script>
+    function handleLogin(event) {
+      event.preventDefault();
+      const name = document.getElementById('userName').value.trim();
+      const phone = document.getElementById('userPhone').value.trim();
+
+      if (name && phone) {
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userPhone', phone);
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+</body>
+
+</html>

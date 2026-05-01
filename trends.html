@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WellnessIQ - Historical Trends</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body data-theme="dark">
+
+  <nav class="navbar">
+    <div class="logo">WellnessIQ</div>
+    <div class="nav-links">
+      <div class="streak-counter" style="color: var(--warning); font-weight: bold; margin-right: 15px;">🔥 0 Day Streak
+      </div>
+      <span class="user-name-display" style="margin-right: 15px; font-weight: bold; color: var(--primary);">User</span>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Check-In</a>
+      <a href="relaxation.html">Relaxation</a>
+      <a href="settings.html">⚙️ Settings</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">☀️/🌙</button>
+      <button onclick="logout()"
+        style="background:none; border:none; color:var(--text-main); cursor:pointer; margin-left:10px; text-decoration:underline;">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container" style="max-width: 900px; margin-top: 50px;">
+    <h1 style="text-align: center; margin-bottom: 30px;">Your Progress Trends 📈</h1>
+
+    <div id="progress-summary" class="glass"
+      style="margin-bottom: 30px; text-align: center; border-left: 4px solid var(--primary);">
+      <h3 style="color: var(--text-main); margin-bottom: 10px;">Weekly Progress</h3>
+      <p id="progress-text" style="font-size: 1.1rem; color: var(--text-muted);">Analyzing your trends...</p>
+    </div>
+
+    <div class="glass" style="padding: 30px; margin-bottom: 20px;">
+      <h3 style="color: var(--primary); margin-bottom: 15px;">Overall Wellness Score History</h3>
+      <div style="height: 300px; width: 100%;">
+        <canvas id="scoreTrendChart"></canvas>
+      </div>
+    </div>
+
+    <div class="glass" style="padding: 30px; margin-bottom: 20px;">
+      <h3 style="color: var(--secondary); margin-bottom: 15px;">Stress & Sleep Progression</h3>
+      <div style="height: 300px; width: 100%;">
+        <canvas id="metricTrendChart"></canvas>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
+      <a href="analysis.html" class="primary-btn"
+        style="text-decoration: none; padding: 12px 24px; display: inline-block;">Back to Latest Analysis</a>
+    </div>
+  </div>
+
+  <script src="theme.js"></script>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const historyStr = localStorage.getItem("healthHistory");
+      if (!historyStr || historyStr === "[]") {
+        document.querySelector('.container').innerHTML += `<p style="text-align:center; color: var(--warning);">No history found yet. Check-in daily to see your trends!</p>`;
+        return;
+      }
+
+      const history = JSON.parse(historyStr);
+
+      // Ensure we only show last 14 entries for readability
+      const plotData = history.slice(-14);
+
+      const labels = plotData.map(d => {
+        const date = new Date(d.date);
+        return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+      });
+
+      const scores = plotData.map(d => d.overallScore || 0);
+      const sleepData = plotData.map(d => d.sleep || 0);
+      const stressData = plotData.map(d => d.stress || 0);
+
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      Chart.defaults.color = isLight ? '#475569' : '#cbd5e1';
+      Chart.defaults.font.family = "'Outfit', sans-serif";
+
+      // Score Chart
+      const ctxScore = document.getElementById('scoreTrendChart').getContext('2d');
+      let gradientScore = ctxScore.createLinearGradient(0, 0, 0, 300);
+      gradientScore.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+      gradientScore.addColorStop(1, 'rgba(59, 130, 246, 0.01)');
+
+      new Chart(ctxScore, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Wellness Score',
+            data: scores,
+            borderColor: '#3b82f6', // Medical Blue
+            backgroundColor: gradientScore,
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#3b82f6',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { grid: { display: false } },
+            y: { min: 0, max: 100, grid: { display: false } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // Metric Chart
+      const ctxMetric = document.getElementById('metricTrendChart').getContext('2d');
+      new Chart(ctxMetric, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Sleep (hours)',
+              data: sleepData,
+              borderColor: '#8b5cf6', // Purple
+              borderWidth: 3,
+              tension: 0.4,
+              pointBackgroundColor: '#fff',
+              pointBorderColor: '#8b5cf6',
+              pointRadius: 3
+            },
+            {
+              label: 'Stress Level (1-10)',
+              data: stressData,
+              borderColor: '#ef4444', // Red
+              borderWidth: 3,
+              tension: 0.4,
+              pointBackgroundColor: '#fff',
+              pointBorderColor: '#ef4444',
+              pointRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { grid: { display: false } },
+            y: { min: 0, max: 12, grid: { display: false } }
+          }
+        }
+      });
+
+      // Calculate progress summary
+      if (scores.length >= 2) {
+        const first = scores[0];
+        const last = scores[scores.length - 1];
+        const diff = last - first;
+        const textEl = document.getElementById('progress-text');
+
+        if (diff > 0) {
+          textEl.innerHTML = `Great job! Your wellness score improved by <strong style="color: var(--good)">+${diff.toFixed(1)} points</strong> over this period.`;
+        } else if (diff < 0) {
+          textEl.innerHTML = `Your wellness score dropped by <strong style="color: var(--bad)">${diff.toFixed(1)} points</strong>. Let's focus on recovery and stress management!`;
+        } else {
+          textEl.innerHTML = `Your wellness score has remained stable. Keep maintaining your healthy habits!`;
+        }
+      } else {
+        document.getElementById('progress-text').innerText = "Keep logging daily to unlock your weekly progress insights!";
+      }
+    });
+  </script>
+  <script src="chatbot.js"></script>
+</body>
+
+</html>
