@@ -14,18 +14,30 @@
   <nav class="navbar">
     <div class="logo">WellnessIQ</div>
     <div class="nav-links">
-      <div class="streak-counter" style="color: var(--warning); font-weight: bold; margin-right: 15px;">🔥 0 Day Streak
+      <div class="streak-counter" style="color: var(--warning); font-weight: bold; margin-right: 15px;">
+        🔥 0 Day Streak
       </div>
-      <span class="user-name-display" style="margin-right: 15px; font-weight: bold; color: var(--primary);">User</span>
+
+      <span class="user-name-display"
+        style="margin-right: 15px; font-weight: bold; color: var(--primary);">
+        User
+      </span>
+
       <a href="index.html">Home</a>
       <a href="dashboard.html">Check-In</a>
       <a href="analysis.html">Dashboard</a>
       <a href="trends.html">Trends</a>
       <a href="relaxation.html">Relaxation</a>
       <a href="settings.html">⚙️ Settings</a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">☀️/🌙</button>
+
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+        ☀️/🌙
+      </button>
+
       <button onclick="logout()"
-        style="background:none; border:none; color:var(--text-main); cursor:pointer; margin-left:10px; text-decoration:underline;">Logout</button>
+        style="background:none; border:none; color:var(--text-main); cursor:pointer; margin-left:10px; text-decoration:underline;">
+        Logout
+      </button>
     </div>
   </nav>
 
@@ -33,10 +45,16 @@
 
     <div class="hero-text">
       <h1>Welcome, <span class="user-name-display" style="color: var(--primary);">User</span>!</h1>
-      <p>Transform Your Health With Intelligent Insights. Track your vitals, lifestyle, and mental state to receive
-        personalized wellness analytics.</p>
 
-      <button class="primary-btn" onclick="startApp()">Start Check-In</button>
+      <p>
+        Transform Your Health With Intelligent Insights.
+        Track your vitals, lifestyle, and mental state to receive
+        personalized wellness analytics.
+      </p>
+
+      <button class="primary-btn" onclick="startApp()">
+        Start Check-In
+      </button>
     </div>
 
     <div class="glow-circle"></div>
@@ -50,6 +68,12 @@
   </script>
 
   <script src="chatbot.js"></script>
+
+  <!-- Footer -->
+  <footer style="text-align:center; padding:20px; color:#777; font-size:15px;">
+    Developed with ❤️ by Gourav Jain
+  </footer>
+
 </body>
 
 </html>
